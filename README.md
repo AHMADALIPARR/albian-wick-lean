@@ -13,6 +13,8 @@ These are not textbook algorithms. Each file isolates a specific novel idea and 
 
 Licensed under the [GNU Affero General Public License v3.0](LICENSE).
 
+Lean sources live in the [`src/`](src/) directory.
+
 ---
 
 ## Visual Overview
@@ -29,7 +31,7 @@ Licensed under the [GNU Affero General Public License v3.0](LICENSE).
 
 ---
 
-## AlbianWick.lean — Albian Group + Wick Rotation
+## src/AlbianWick.lean — Albian Group + Wick Rotation
 
 Turns a #P-style relation-counting problem (number-field sieve style) into an NP decision problem via the Albian group \((\mathbb{Z}/2\mathbb{Z})^\pi\) and a Wick rotation.
 
@@ -69,7 +71,7 @@ Turns a #P-style relation-counting problem (number-field sieve style) into an NP
 
 ---
 
-## ComplexityMiddleGround.lean — BQP / NP / PSPACE
+## src/ComplexityMiddleGround.lean — BQP / NP / PSPACE
 
 Taxonomic formalization of a middle ground between quantum and classical regimes.
 
@@ -96,7 +98,7 @@ Taxonomic formalization of a middle ground between quantum and classical regimes
 
 ---
 
-## WACE.lean — Windowed Addition-Chain Exponentiation
+## src/WACE.lean — Windowed Addition-Chain Exponentiation
 
 Hand-crafted modular exponentiation \(a^x \bmod M\) using odd-power windows. Polynomial in bitlen(M). No quantum period finding.
 
@@ -108,11 +110,11 @@ Hand-crafted modular exponentiation \(a^x \bmod M\) using odd-power windows. Pol
 
   Scan exponent x in windows of size w = ⌈log₂ n⌉
 
-  ┌──────────────────────────────────────────────┐
+  ┌───────────────────────────────────────────────────┐
   │  window  →  if 0: shift by 2^w          │
   │           else: multiply tbl[idx]     │
   │                 then shift by 2^w      │
-  └──────────────────────────────────────────────┘
+  └───────────────────────────────────────────────────┘
                     │
                     ▼
               r ≡ a^x  (mod M)
@@ -138,7 +140,7 @@ lake build
 ```
 
 Requires Lean 4 (≥ 4.8) + Mathlib.  
-Open any `.lean` file in VS Code with the Lean 4 extension.
+Open any file under `src/` in VS Code with the Lean 4 extension.
 
 ## Status
 
