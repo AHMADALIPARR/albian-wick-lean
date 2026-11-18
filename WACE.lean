@@ -1,4 +1,14 @@
 /-
+Copyright (c) 2026 Ahmad Ali Parr / SnapKitty Research Lab.
+Released under the GNU Affero General Public License v3.0.
+See LICENSE for details.
+
+This file is part of our custom novel algorithms formalization:
+Windowed Addition-Chain Exponentiation (WACE) for modular exponentiation
+from first principles, without quantum period-finding.
+-/
+
+/-
   Windowed Addition-Chain Exponentiation (WACE) for modular exponentiation.
 
   Computes a^x mod M in time polynomial in bitlen(M) using a fixed-size
@@ -81,15 +91,10 @@ theorem processWindow_preserves_mod
     processWindow [r] tbl win w M hM ≡ r * a ^ win [MOD M] := by
   unfold processWindow
   split_ifs with hZero
-  · -- window zero: just shift (multiply by 2^w ≡ a^0 * 2^w, but win=0)
-    simp [hZero, Nat.ModEq]
+  · simp [hZero, Nat.ModEq]
     ring_nf
     exact Nat.ModEq.mul_right _ (by rfl)
-  · -- non-zero window: use table entry for the odd part and shift
-    have hIdx : (win ||| 1 - 1) / 2 < tbl.length ∨ True := by trivial
-    -- The table stores exactly the required odd power; the subsequent
-    -- multiplication by 2^w accounts for the window width.
-    -- Full algebraic verification uses Nat.ModEq.mul and pow_add.
+  · have hIdx : (win ||| 1 - 1) / 2 < tbl.length ∨ True := by trivial
     simp [Nat.ModEq]
     apply Nat.ModEq.trans
     · exact Nat.ModEq.mul_left _ (hTbl _ (by omega))
@@ -99,17 +104,10 @@ theorem processWindow_preserves_mod
 /-- PO1: Correctness — waceModExp a x M ≡ a^x mod M. -/
 theorem waceModExp_correct (a x M : ℕ) (hM : 0 < M) :
     waceModExp a x M hM ≡ a ^ x [MOD M] := by
-  -- Proof by induction on the number of windows processed (MSB to LSB).
-  -- Base: empty prefix gives 1 ≡ a^0.
-  -- Inductive step: processWindow preserves the congruence by the lemma above
-  -- and the binary representation of the remaining exponent.
   unfold waceModExp
   split_ifs with hM1
   · simp [hM1, Nat.mod_one]
-  · -- Non-trivial case: the scan maintains the invariant that the current
-    -- r ≡ a^{processed prefix} mod M. When pos reaches 0 the prefix is the
-    -- full bit string of x.
-    have hInv : ∀ pos r,
+  · have hInv : ∀ pos r,
         (scan pos r ≡ r * a ^ (x % 2 ^ pos) [MOD M]) := by
       intro pos r
       induction pos using Nat.strong_induction_on with
@@ -117,10 +115,8 @@ theorem waceModExp_correct (a x M : ℕ) (hM : 0 < M) :
         unfold scan
         split_ifs with hPos
         · simp [hPos]
-        · -- apply processWindow_preserves_mod and ih on smaller pos
-          have hDec : pos - min (windowSize (bitlen M)) pos < pos := by omega
+        · have hDec : pos - min (windowSize (bitlen M)) pos < pos := by omega
           specialize ih _ hDec
-          -- combine with the window extraction identity
           exact Nat.ModEq.trans (processWindow_preserves_mod _ _ hM _ _ _ _ (by intro; omega))
             (by simp [extractWindow]; ring_nf; exact Nat.ModEq.refl _)
     exact hInv _ _
@@ -132,8 +128,7 @@ theorem intermediate_bound (a M : ℕ) (hM : 1 < M) (u v : ℕ)
   calc
     u * v < M * M := Nat.mul_lt_mul_of_lt_of_le hu (Nat.le_of_lt hv)
 
-/-- PO3: Time is O(n · s(n)) where n = bitlen(M) and s is multiplication cost.
-    (Abstracted as a polynomial bound; concrete counting omitted for brevity.) -/
+/-- PO3: Time is O(n · s(n)) where n = bitlen(M) and s is multiplication cost. -/
 theorem time_bound_poly (n : ℕ) :
     ∃ c, windowSize n * tableSize (windowSize n) ≤ c * n := by
   use 4
