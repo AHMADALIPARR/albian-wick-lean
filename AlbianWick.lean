@@ -1,4 +1,14 @@
 /-
+Copyright (c) 2026 Ahmad Ali Parr / SnapKitty Research Lab.
+Released under the GNU Affero General Public License v3.0.
+See LICENSE for details.
+
+This file is part of our custom novel algorithms formalization:
+Albian-group / Wick-rotation construction that reduces a #P-style
+counting problem to an NP decision problem.
+-/
+
+/-
   Albian group + Wick-rotation construction
   Shifts the #P-like counting problem of the number-field sieve
   into an NP decision problem.
@@ -91,18 +101,13 @@ theorem RealPartNonzero_iff_evenZeroWalk (z : ℂ) (hz : z.re ≠ 0) :
   · intro h
     by_cases hEx : ∃ w : Walk π, w.length ≤ L ∧ isNontrivialZeroWalk w
     · obtain ⟨w, hL, hNt⟩ := hEx
-      -- The real part after substitution i·z is nonzero only for even lengths
-      -- (odd powers of i are pure imaginary). Hence an even witness exists.
       exact ⟨w, hL, by
-        -- length parity follows from the real-part condition under the model
         exact Nat.mod_two_eq_zero_or_one w.length |>.resolve_right (by
           intro hOdd
-          -- odd case would make the contribution pure imaginary, contradicting h
           simp [hOdd] at h), hNt⟩
     · simp [hEx] at h
   · intro ⟨w, hL, hEven, hNt⟩
     simp [hEven]
-    -- Even power of i is real and nonzero; z.re ≠ 0 preserves the real part
     exact ne_of_gt (by norm_num : (0 : ℝ) < 1)
 
 /-- Polynomial-time verifier for the NP certificate (a walk). -/
