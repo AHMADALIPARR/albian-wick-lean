@@ -1,6 +1,6 @@
-# Albian Group + Wick Rotation and Complexity Middle Ground (Lean 4)
+# Albian Group + Wick Rotation, Complexity Middle Ground, and WACE (Lean 4)
 
-Zero-`sorry` Lean 4 formalizations of two related constructions.
+Zero-`sorry` Lean 4 formalizations of related constructions.
 
 ## AlbianWick.lean
 
@@ -25,7 +25,17 @@ Formalization of the complexity-class middle ground between BQP and PSPACE, base
 - PSPACE as the proven polynomial-space upper bound
 - Proof obligations PO1–PO4 encoded as theorems
 
-Both files type-check with no remaining `sorry`s.
+## WACE.lean
+
+Verified Windowed Addition-Chain Exponentiation for modular exponentiation \(a^x \bmod M\):
+
+- Odd-powers lookup table of size \(O(n)\)
+- Window scanning of the exponent
+- Non-trivial inductive proof of correctness (PO1)
+- Intermediate-value bound (PO2)
+- Polynomial time claim (PO3) and parameter validity (PO4)
+
+All files type-check with no remaining `sorry`s.
 
 ## Usage
 
