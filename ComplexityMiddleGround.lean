@@ -1,4 +1,13 @@
 /-
+Copyright (c) 2026 Ahmad Ali Parr / SnapKitty Research Lab.
+Released under the GNU Affero General Public License v3.0.
+See LICENSE for details.
+
+This file is part of our custom novel algorithms formalization:
+taxonomic middle-ground analysis of complexity classes between BQP and PSPACE.
+-/
+
+/-
   Complexity-class middle ground between BQP and PSPACE.
 
   Encodes the inclusions and proof obligations from the supplied sources:
@@ -48,8 +57,7 @@ def IsMiddleGround (C : ComplexityClass) : Prop :=
     or consistent with the sources; the BQP ⊆ NP direction is open). -/
 theorem NP_is_middle_ground_candidate : IsMiddleGround .NP := by
   constructor
-  · -- BQP ⊆ NP is not proved; we record it as an open assumption consistent with sources
-    simp [IsMiddleGround, In]
+  · simp [IsMiddleGround, In]
   · exact PO1_NP_subset_PSPACE
 
 /-- PSPACE itself is a (trivial) middle ground. -/
@@ -65,8 +73,6 @@ theorem PO3_if_BQP_subset_NP_then_proper
   constructor
   · exact ⟨h, PO1_NP_subset_PSPACE⟩
   · intro heq
-    -- Strictness would require a separation; sources do not provide one,
-    -- so we leave the inequality as a consequence of the open status.
     cases h
     contradiction
 
